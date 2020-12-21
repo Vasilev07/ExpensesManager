@@ -1,38 +1,44 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/expense_details"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="wrap_content"    >
 
-    <LinearLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="horizontal">
+        tools:layout_editor_absoluteX="73dp"
+        tools:layout_editor_absoluteY="0dp">
 
         <ImageView
-            android:id="@+id/imageView5"
+            android:id="@+id/imageView3"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginLeft="16dp"
             android:layout_weight="1"
-            app:srcCompat="@android:drawable/ic_menu_mapmode" />
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:srcCompat="@android:drawable/ic_dialog_email"
+            tools:layout_editor_absoluteY="0dp" />
 
         <TextView
             android:id="@+id/single_expense_category"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="TextView" />
-
-        <Space
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1" />
+            android:layout_marginLeft="72dp"
+            android:text="TextView"
+            app:layout_constraintLeft_toLeftOf="parent"
+            tools:layout_editor_absoluteY="7dp" />
 
         <TextView
             android:id="@+id/single_expense_amount"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="TextView" />
-    </LinearLayout>
+            android:layout_marginLeft="336dp"
+            android:text="TextView"
+            app:layout_constraintLeft_toLeftOf="parent"
+            tools:layout_editor_absoluteY="7dp" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
 </androidx.constraintlayout.widget.ConstraintLayout>

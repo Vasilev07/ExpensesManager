@@ -8,10 +8,10 @@ import java.util.List;
 public class Expense {
     private Date date;
     private String category;
-    private double amount;
+    private int amount;
     private List<ExpenseDetails> subExpenses = new ArrayList<ExpenseDetails>();
 
-    public Expense(Date date, String category, double amount) {
+    public Expense(Date date, String category, int amount) {
         this.date = date;
         this.category = category;
         this.amount = amount;
@@ -33,7 +33,7 @@ public class Expense {
         return category;
     }
 
-    public double getAmount() {
+    public int getAmount() {
         return amount;
     }
 }

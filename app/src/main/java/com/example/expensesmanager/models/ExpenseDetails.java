@@ -2,9 +2,9 @@ package com.example.expensesmanager.models;
 
 public class ExpenseDetails {
     private String category;
-    private double amount;
+    private int amount;
 
-    public ExpenseDetails(String category, double amount) {
+    public ExpenseDetails(String category, int amount) {
         this.category = category;
         this.amount = amount;
     }
@@ -13,7 +13,7 @@ public class ExpenseDetails {
         return category;
     }
 
-    public double getAmount() {
+    public int getAmount() {
         return amount;
     }
 }
