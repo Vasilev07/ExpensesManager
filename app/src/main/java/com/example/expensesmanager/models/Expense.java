@@ -1,17 +1,16 @@
 package com.example.expensesmanager.models;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
 public class Expense {
-    private Date date;
+    private String date;
     private String category;
     private int amount;
     private List<ExpenseDetails> subExpenses = new ArrayList<ExpenseDetails>();
 
-    public Expense(Date date, String category, int amount) {
+    public Expense(String date, String category, int amount) {
         this.date = date;
         this.category = category;
         this.amount = amount;
@@ -25,7 +24,7 @@ public class Expense {
         return subExpenses;
     }
 
-    public Date getDate() {
+    public String getDate() {
         return date;
     }
 

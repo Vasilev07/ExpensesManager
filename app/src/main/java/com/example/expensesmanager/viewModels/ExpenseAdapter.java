@@ -67,9 +67,7 @@ public class ExpenseAdapter extends RecyclerView.Adapter<ExpenseAdapter.ExpenseV
         }
     }
 
-    public void setDate (TextView view, Date today){
-        SimpleDateFormat formatter = new SimpleDateFormat("dd.MM.yyyy");//formating according to my need
-        String date = formatter.format(today);
+    public void setDate (TextView view, String date){
         view.setText(date);
     }
 }

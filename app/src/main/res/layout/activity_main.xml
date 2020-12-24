@@ -9,7 +9,7 @@
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/expense_card"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="0dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
@@ -21,12 +21,24 @@
         android:id="@+id/income"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:onClick="addIncome"
         android:text="income"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/expense_card"
-        app:layout_constraintVertical_bias="0.02" />
+        app:layout_constraintBottom_toBottomOf="@id/expense_card"
+        app:layout_constraintEnd_toEndOf="@id/expense_card"
+        app:layout_constraintHorizontal_bias="0.129"
+        app:layout_constraintStart_toEndOf="@+id/expense"
+        app:layout_constraintTop_toBottomOf="@+id/expense_card" />
+
+    <Button
+        android:id="@+id/expense"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:onClick="addExpense"
+        android:text="expense"
+        app:layout_constraintBottom_toBottomOf="@id/expense_card"
+        app:layout_constraintEnd_toEndOf="@id/expense_card"
+        app:layout_constraintHorizontal_bias="0.297"
+        app:layout_constraintStart_toStartOf="@id/expense_card"
+        app:layout_constraintTop_toBottomOf="@+id/expense_card" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
