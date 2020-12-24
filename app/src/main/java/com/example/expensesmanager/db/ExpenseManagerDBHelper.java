@@ -10,7 +10,6 @@ import com.example.expensesmanager.models.Expense;
 import com.example.expensesmanager.models.ExpenseDetails;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -85,9 +84,11 @@ public class ExpenseManagerDBHelper extends SQLiteOpenHelper {
             ExpenseDetails expenseDetails = new ExpenseDetails(category, Integer.parseInt(amount), date);
 
             if (expenses.get(onlyDate) != null && expenses.get(onlyDate).getSubExpenses().size() >= 0) {
-                expenses.get(onlyDate).getSubExpenses().add(expenseDetails);
+                Expense currentExpense = expenses.get(onlyDate);
+                currentExpense.increaseAmount(expenseDetails.getAmount());
+                currentExpense.getSubExpenses().add(expenseDetails);
             } else {
-                Expense expense = new Expense(date, category, Integer.parseInt(amount));
+                Expense expense = new Expense(date, Integer.parseInt(amount));
                 expense.addExpense(expenseDetails);
                 expenses.put(onlyDate, expense);
             }
