@@ -11,7 +11,9 @@ import com.example.expensesmanager.models.ExpenseDetails;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class ExpenseManagerDBHelper extends SQLiteOpenHelper {
     private static final String DATABASE_NAME = "expense_manager.db";
@@ -57,9 +59,10 @@ public class ExpenseManagerDBHelper extends SQLiteOpenHelper {
         db.insert(ExpenseManagerDBHelper.TABLE_NAME, null, values);
     }
 
-    public List<Expense> getAllExpenses() {
-        List<Expense> result = new ArrayList<Expense>();
+    public Map<String, Expense> getAllExpenses() {
+        List<Expense> expensesToDate = new ArrayList<Expense>();
         SQLiteDatabase db = this.getReadableDatabase();
+        Map<String, Expense> expenses = new HashMap<String, Expense>();
 
         String query = "SELECT" +
                 " * FROM " +
@@ -74,14 +77,23 @@ public class ExpenseManagerDBHelper extends SQLiteOpenHelper {
             int id = cursor.getInt(cursor.getColumnIndex(ExpenseManagerDBHelper.UID));
             String category = cursor.getString(cursor.getColumnIndex(ExpenseManagerDBHelper.COLUMN_CATEGORY));
             String date = cursor.getString(cursor.getColumnIndex(ExpenseManagerDBHelper.COLUMN_DATE));
+            // potential bug with big amount
             String amount = cursor.getString(cursor.getColumnIndex(ExpenseManagerDBHelper.COLUMN_AMOUNT));
 
-            ExpenseDetails expenseDetails = new ExpenseDetails(category, Integer.parseInt(amount), date);
-            Expense expense = new Expense(date, category, Integer.parseInt(amount));
+            String onlyDate = date.split(" ")[0];
 
-            result.add(expense);
+            ExpenseDetails expenseDetails = new ExpenseDetails(category, Integer.parseInt(amount), date);
+
+            if (expenses.get(onlyDate) != null && expenses.get(onlyDate).getSubExpenses().size() >= 0) {
+                expenses.get(onlyDate).getSubExpenses().add(expenseDetails);
+            } else {
+                Expense expense = new Expense(date, category, Integer.parseInt(amount));
+                expense.addExpense(expenseDetails);
+                expenses.put(onlyDate, expense);
+            }
+
         }
 
-        return result;
+        return expenses;
     }
 }

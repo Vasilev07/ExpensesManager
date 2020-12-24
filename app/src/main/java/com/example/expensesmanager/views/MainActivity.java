@@ -36,7 +36,7 @@ public class MainActivity extends AppCompatActivity {
 
         expenseManagerDBHelper = new ExpenseManagerDBHelper(this);
 
-        data = expenseManagerDBHelper.getAllExpenses();
+        data = new ArrayList<>(expenseManagerDBHelper.getAllExpenses().values());
 
         recyclerView = findViewById(R.id.expense_card);
 
@@ -47,9 +47,6 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-
-//        database.close();
-//        databaseHelper.close();
     }
 
     public void addExpense(View view) {
@@ -61,31 +58,4 @@ public class MainActivity extends AppCompatActivity {
         Intent intent = new Intent(this, ExpenseActivity.class);
         startActivity(intent);
     }
-
-//    private List<Expense> addData() {
-//        List<Expense> result = new ArrayList<Expense>();
-//
-//        Expense parent1 = new Expense(new Date(), "eating", 200);
-//        parent1.addExpense(new ExpenseDetails( "fart1", 30, new Date()));
-//        parent1.addExpense(new ExpenseDetails( "smoking12", 20, new Date()));
-//        parent1.addExpense(new ExpenseDetails( "smoking12", 201, new Date()));
-//        parent1.addExpense(new ExpenseDetails( "smoking14", 201, new Date()));
-//        parent1.addExpense(new ExpenseDetails( "smoking15", 201, new Date()));
-//
-//        Expense parent2 = new Expense(new Date(System.currentTimeMillis()-24*60*60*1000), "eating2", 300);
-//        parent2.addExpense(new ExpenseDetails("fart21", 301, new Date(System.currentTimeMillis()-24*60*60*1000)));
-//        parent2.addExpense(new ExpenseDetails("smoking22", 202, new Date(System.currentTimeMillis()-24*60*60*1000)));
-//        parent2.addExpense(new ExpenseDetails("smoking23", 11, new Date(System.currentTimeMillis()-24*60*60*1000)));
-//
-//        Expense parent3 = new Expense(new Date(System.currentTimeMillis()-((24*60*60*1000)*2)), "eating3", 300);
-//        parent3.addExpense(new ExpenseDetails("fart31", 301, new Date(System.currentTimeMillis()-24*60*60*1000)));
-//        parent3.addExpense(new ExpenseDetails("smoking31", 202, new Date(System.currentTimeMillis()-24*60*60*1000)));
-//        parent3.addExpense(new ExpenseDetails("smoking32", 11, new Date(System.currentTimeMillis()-24*60*60*1000)));
-//
-//        result.add(parent1);
-//        result.add(parent2);
-//        result.add(parent3);
-//
-//        return result;
-//    }
 }
