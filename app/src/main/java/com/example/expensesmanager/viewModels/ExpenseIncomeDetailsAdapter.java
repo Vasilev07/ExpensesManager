@@ -10,16 +10,15 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.expensesmanager.R;
-import com.example.expensesmanager.models.Expense;
-import com.example.expensesmanager.models.ExpenseDetails;
+import com.example.expensesmanager.models.ExpenseIncomeDetails;
 
 import java.util.List;
 
-public class ExpenseDetailsAdapter extends RecyclerView.Adapter<ExpenseDetailsAdapter.ExpenseViewHolder> {
-    List<ExpenseDetails> expenses;
+public class ExpenseIncomeDetailsAdapter extends RecyclerView.Adapter<ExpenseIncomeDetailsAdapter.ExpenseViewHolder> {
+    List<ExpenseIncomeDetails> expenses;
     Context context;
 
-    public ExpenseDetailsAdapter(Context ctx, List<ExpenseDetails> expenses) {
+    public ExpenseIncomeDetailsAdapter(Context ctx, List<ExpenseIncomeDetails> expenses) {
         this.context = ctx;
         this.expenses = expenses;
     }

@@ -11,7 +11,7 @@ import android.view.View;
 import com.example.expensesmanager.R;
 import com.example.expensesmanager.db.ExpenseManagerDBHelper;
 import com.example.expensesmanager.models.Expense;
-import com.example.expensesmanager.viewModels.ExpenseAdapter;
+import com.example.expensesmanager.viewModels.ExpenseIncomeAdapter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,11 +28,11 @@ public class MainActivity extends AppCompatActivity {
 
         expenseManagerDBHelper = new ExpenseManagerDBHelper(this);
 
-        data = new ArrayList<>(expenseManagerDBHelper.getAllExpenses().values());
+        data = new ArrayList<>(expenseManagerDBHelper.getAllExpensesOrIncomes().values());
 
         recyclerView = findViewById(R.id.expense_card);
 
-        recyclerView.setAdapter(new ExpenseAdapter(this, data));
+        recyclerView.setAdapter(new ExpenseIncomeAdapter(this, data));
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
     }
 
@@ -42,12 +42,14 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void addExpense(View view) {
-        Intent intent = new Intent(this, ExpenseActivity.class);
+        Intent intent = new Intent(this, ExpenseIncomeActivity.class);
+        intent.putExtra("expense", true);
         startActivity(intent);
     }
 
     public void addIncome(View view) {
-        Intent intent = new Intent(this, ExpenseActivity.class);
+        Intent intent = new Intent(this, ExpenseIncomeActivity.class);
+        intent.putExtra("expense", false);
         startActivity(intent);
     }
 }

@@ -6,18 +6,18 @@ import java.util.List;
 public class Expense {
     private String date;
     private int amount;
-    private List<ExpenseDetails> subExpenses = new ArrayList<ExpenseDetails>();
+    private List<ExpenseIncomeDetails> subExpenses = new ArrayList<ExpenseIncomeDetails>();
 
     public Expense(String date, int amount) {
         this.date = date;
         this.amount = amount;
     }
 
-    public void addExpense(ExpenseDetails expenseDetails) {
-        this.subExpenses.add(expenseDetails);
+    public void addExpense(ExpenseIncomeDetails expenseIncomeDetails) {
+        this.subExpenses.add(expenseIncomeDetails);
     }
 
-    public List<ExpenseDetails> getSubExpenses() {
+    public List<ExpenseIncomeDetails> getSubExpenses() {
         return subExpenses;
     }
 

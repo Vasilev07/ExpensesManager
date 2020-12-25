@@ -13,16 +13,14 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.expensesmanager.R;
 import com.example.expensesmanager.models.Expense;
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.List;
 
-public class ExpenseAdapter extends RecyclerView.Adapter<ExpenseAdapter.ExpenseViewHolder> {
+public class ExpenseIncomeAdapter extends RecyclerView.Adapter<ExpenseIncomeAdapter.ExpenseViewHolder> {
     Context context;
     List<Expense> expenses;
     private RecyclerView.RecycledViewPool viewPool = new RecyclerView.RecycledViewPool();
 
-    public ExpenseAdapter(Context context, List<Expense> data) {
+    public ExpenseIncomeAdapter(Context context, List<Expense> data) {
         this.context = context;
         this.expenses = data;
     }
@@ -33,7 +31,7 @@ public class ExpenseAdapter extends RecyclerView.Adapter<ExpenseAdapter.ExpenseV
         View view = LayoutInflater.from(context)
                 .inflate(R.layout.expense_card, parent, false);
 
-        return new ExpenseAdapter.ExpenseViewHolder(view);
+        return new ExpenseIncomeAdapter.ExpenseViewHolder(view);
     }
 
     @Override
@@ -44,7 +42,7 @@ public class ExpenseAdapter extends RecyclerView.Adapter<ExpenseAdapter.ExpenseV
         setDate(holder.expenseDate, expenses.get(position).getDate());
         holder.totalAmount.setText(expenses.get(position).getAmount() + "");
         holder.child.setLayoutManager(childLayoutManager);
-        holder.child.setAdapter(new ExpenseDetailsAdapter(context, expenses.get(position).getSubExpenses()));
+        holder.child.setAdapter(new ExpenseIncomeDetailsAdapter(context, expenses.get(position).getSubExpenses()));
         holder.child.setRecycledViewPool(viewPool);
     }
 

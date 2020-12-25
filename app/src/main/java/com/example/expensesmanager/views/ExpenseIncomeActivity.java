@@ -6,20 +6,18 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
-import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.expensesmanager.R;
 import com.example.expensesmanager.db.ExpenseManagerDBHelper;
-import com.example.expensesmanager.models.ExpenseDetails;
+import com.example.expensesmanager.models.ExpenseIncomeDetails;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.Locale;
 
-public class ExpenseActivity extends AppCompatActivity {
+public class ExpenseIncomeActivity extends AppCompatActivity {
     Calendar dateSelected = Calendar.getInstance();
     private DatePickerDialog datePickerDialog;
     private Button saveExpense;
@@ -34,6 +32,9 @@ public class ExpenseActivity extends AppCompatActivity {
         setContentView(R.layout.expense);
 
         expenseManagerDBHelper = new ExpenseManagerDBHelper(this);
+
+        Bundle data = getIntent().getExtras();
+        final Boolean isExpense = data.getBoolean("expense");
 
         saveExpense = findViewById(R.id.save_expense);
         expenseDate = findViewById(R.id.dateEditText);
@@ -50,12 +51,12 @@ public class ExpenseActivity extends AppCompatActivity {
         saveExpense.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ExpenseDetails expenseDetails = new ExpenseDetails(
+                ExpenseIncomeDetails expenseIncomeDetails = new ExpenseIncomeDetails(
                         expenseCategory.getText().toString(),
                         Integer.parseInt(expenseAmount.getText().toString()),
                         expenseDate.getText().toString()
                         );
-                expenseManagerDBHelper.addExpense(expenseDetails);
+                expenseManagerDBHelper.addExpenseOrIncomes(expenseIncomeDetails, isExpense);
             }
         });
     }
