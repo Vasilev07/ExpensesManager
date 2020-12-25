@@ -7,6 +7,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.CompoundButton;
+import android.widget.Switch;
 
 import com.example.expensesmanager.R;
 import com.example.expensesmanager.db.ExpenseManagerDBHelper;
@@ -27,13 +29,26 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         expenseManagerDBHelper = new ExpenseManagerDBHelper(this);
+        Switch isExpenseSwitch = findViewById(R.id.isExpense);
+        Boolean isExpense = !isExpenseSwitch.getShowText();
 
-        data = new ArrayList<>(expenseManagerDBHelper.getAllExpensesOrIncomes().values());
+        data = new ArrayList<>(expenseManagerDBHelper.getAllExpensesOrIncomes(!isExpense).values());
 
         recyclerView = findViewById(R.id.expense_card);
 
         recyclerView.setAdapter(new ExpenseIncomeAdapter(this, data));
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
+
+        isExpenseSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                data = new ArrayList<>(expenseManagerDBHelper.getAllExpensesOrIncomes(!isChecked).values());
+
+                recyclerView = findViewById(R.id.expense_card);
+
+                recyclerView.setAdapter(new ExpenseIncomeAdapter(MainActivity.this, data));
+                recyclerView.setLayoutManager(new LinearLayoutManager(MainActivity.this));
+            }
+        });
     }
 
     @Override

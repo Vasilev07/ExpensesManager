@@ -13,11 +13,12 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.expensesmanager.R;
 import com.example.expensesmanager.models.Expense;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class ExpenseIncomeAdapter extends RecyclerView.Adapter<ExpenseIncomeAdapter.ExpenseViewHolder> {
     Context context;
-    List<Expense> expenses;
+    List<Expense> expenses = new ArrayList<>();
     private RecyclerView.RecycledViewPool viewPool = new RecyclerView.RecycledViewPool();
 
     public ExpenseIncomeAdapter(Context context, List<Expense> data) {

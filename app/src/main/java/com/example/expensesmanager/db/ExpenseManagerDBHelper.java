@@ -71,16 +71,27 @@ public class ExpenseManagerDBHelper extends SQLiteOpenHelper {
         }
     }
 
-    public Map<String, Expense> getAllExpensesOrIncomes() {
+    public Map<String, Expense> getAllExpensesOrIncomes(Boolean isExpense) {
         SQLiteDatabase db = this.getReadableDatabase();
         Map<String, Expense> expenses = new HashMap<String, Expense>();
 
-        String query = "SELECT" +
-                " * FROM " +
-                ExpenseManagerDBHelper.EXPENSES_TABLE_NAME +
-                " ORDER BY" +
-                " datetime(" +
-                ExpenseManagerDBHelper.COLUMN_DATE + ") DESC";
+        String query;
+        if (isExpense) {
+            query = "SELECT" +
+                    " * FROM " +
+                    ExpenseManagerDBHelper.EXPENSES_TABLE_NAME +
+                    " ORDER BY" +
+                    " datetime(" +
+                    ExpenseManagerDBHelper.COLUMN_DATE + ") DESC";
+        } else {
+            query = "SELECT" +
+                    " * FROM " +
+                    ExpenseManagerDBHelper.INCOME_TABLE_NAME +
+                    " ORDER BY" +
+                    " datetime(" +
+                    ExpenseManagerDBHelper.COLUMN_DATE + ") DESC";
+        }
+
 
         Cursor cursor = db.rawQuery(query, null);
 

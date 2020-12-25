@@ -6,6 +6,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.Switch;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -25,6 +26,7 @@ public class ExpenseIncomeActivity extends AppCompatActivity {
     private EditText expenseDate;
     private EditText expenseAmount;
     private EditText expenseCategory;
+    private Switch isExpense;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,6 +37,9 @@ public class ExpenseIncomeActivity extends AppCompatActivity {
 
         Bundle data = getIntent().getExtras();
         final Boolean isExpense = data.getBoolean("expense");
+
+        this.isExpense = findViewById(R.id.isExpense);
+        this.isExpense.setChecked(!isExpense);
 
         saveExpense = findViewById(R.id.save_expense);
         expenseDate = findViewById(R.id.dateEditText);
