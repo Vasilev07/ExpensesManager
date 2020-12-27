@@ -1,4 +1,4 @@
-package com.example.expensesmanager.viewModels;
+package com.example.expensesmanager.adapters;
 
 import android.content.Context;
 import android.view.LayoutInflater;

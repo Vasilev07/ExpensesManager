@@ -6,6 +6,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
+import com.example.expensesmanager.models.Category;
 import com.example.expensesmanager.models.Expense;
 import com.example.expensesmanager.models.ExpenseIncomeDetails;
 
@@ -16,13 +17,19 @@ import java.util.Map;
 
 public class ExpenseManagerDBHelper extends SQLiteOpenHelper {
     private static final String DATABASE_NAME = "expense_manager.db";
-    private static final int DATABASE_VERSION = 4;
+    private static final int DATABASE_VERSION = 5;
+
     public static final String EXPENSES_TABLE_NAME = "expenses";
     public static final String INCOME_TABLE_NAME = "income";
+    public static final String CATEGORIES_TABLE_NAME = "categories";
+
     public static final String UID = "_id";
     public static final String COLUMN_CATEGORY = "category";
     public static final String COLUMN_DATE = "date";
     public static final String COLUMN_AMOUNT = "amount";
+
+    public static final String COLUMN_CATEGORY_NAME = "name";
+    public static final String COLUMN_IS_EXPENSE = "isExpense";
 
     public ExpenseManagerDBHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -30,6 +37,12 @@ public class ExpenseManagerDBHelper extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
+        String SQL_CREATE_CATEGORIES_TABLE = "CREATE TABLE " +
+                CATEGORIES_TABLE_NAME + "("+
+                UID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                COLUMN_CATEGORY_NAME + " TEXT NOT NULL," +
+                COLUMN_IS_EXPENSE + " TEXT NOT NULL);";
+
         String SQL_CREATE_EXPENSES_TABLE = "CREATE TABLE " +
                 EXPENSES_TABLE_NAME + "("+
                 UID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
@@ -44,6 +57,7 @@ public class ExpenseManagerDBHelper extends SQLiteOpenHelper {
                 COLUMN_DATE + " TEXT NOT NULL, " +
                 COLUMN_AMOUNT + " REAL NOT NULL);";
 
+        db.execSQL(SQL_CREATE_CATEGORIES_TABLE);
         db.execSQL(SQL_CREATE_EXPENSES_TABLE);
         db.execSQL(SQL_CREATE_INCOME_TABLE);
     }
@@ -119,5 +133,58 @@ public class ExpenseManagerDBHelper extends SQLiteOpenHelper {
         }
 
         return expenses;
+    }
+
+    public void addInitialCategories() {
+        Category food = new Category("food", true);
+        Category drinks = new Category("drinks", true);
+        Category donation = new Category("donation", true);
+        Category salary = new Category("salary", false);
+
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        ContentValues values = new ContentValues();
+        List<Category> initialCategories = new ArrayList<>();
+
+        initialCategories.add(food);
+        initialCategories.add(drinks);
+        initialCategories.add(donation);
+        initialCategories.add(salary);
+
+        for (Category category : initialCategories) {
+            values.put(ExpenseManagerDBHelper.COLUMN_CATEGORY_NAME, category.getName());
+            values.put(ExpenseManagerDBHelper.COLUMN_IS_EXPENSE, category.getExpense());
+
+            db.insert(ExpenseManagerDBHelper.CATEGORIES_TABLE_NAME, null, values);
+        }
+
+
+        // add check if already added
+        if (getAllCategories().size() <= 0) {
+            db.insert(ExpenseManagerDBHelper.CATEGORIES_TABLE_NAME, null, values);
+        }
+    }
+
+    public List<Category> getAllCategories() {
+        SQLiteDatabase db = this.getReadableDatabase();
+        List<Category> categories = new ArrayList<>();
+
+        String query = "SELECT" +
+                " * FROM " +
+                ExpenseManagerDBHelper.CATEGORIES_TABLE_NAME +
+                ";";
+
+        Cursor cursor = db.rawQuery(query, null);
+
+        while (cursor.moveToNext()) {
+            int id = cursor.getInt(cursor.getColumnIndex(ExpenseManagerDBHelper.UID));
+            String name = cursor.getString(cursor.getColumnIndex(ExpenseManagerDBHelper.COLUMN_CATEGORY_NAME));
+            Boolean isExpense = Boolean.parseBoolean(cursor.getString(cursor.getColumnIndex(ExpenseManagerDBHelper.COLUMN_IS_EXPENSE)));
+
+            Category category = new Category(name, isExpense);
+            categories.add(category);
+        }
+
+        return categories;
     }
 }

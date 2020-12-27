@@ -13,7 +13,7 @@ import android.widget.Switch;
 import com.example.expensesmanager.R;
 import com.example.expensesmanager.db.ExpenseManagerDBHelper;
 import com.example.expensesmanager.models.Expense;
-import com.example.expensesmanager.viewModels.ExpenseIncomeAdapter;
+import com.example.expensesmanager.adapters.ExpenseIncomeAdapter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -29,6 +29,9 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         expenseManagerDBHelper = new ExpenseManagerDBHelper(this);
+
+        expenseManagerDBHelper.addInitialCategories();
+
         Switch isExpenseSwitch = findViewById(R.id.isExpense);
         Boolean isExpense = !isExpenseSwitch.getShowText();
 
