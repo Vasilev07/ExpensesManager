@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.CompoundButton;
 import android.widget.CursorAdapter;
 import android.widget.DatePicker;
 import android.widget.EditText;
@@ -33,6 +34,8 @@ public class ExpenseIncomeActivity extends AppCompatActivity {
     private EditText expenseAmount;
     private Spinner categoriesSpinner;
     private Switch isExpense;
+    private List<Category> categories;
+    private List<String> categoryNames;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,24 +54,28 @@ public class ExpenseIncomeActivity extends AppCompatActivity {
         expenseDate = findViewById(R.id.dateEditText);
         expenseAmount = findViewById(R.id.amount_expense_text);
         categoriesSpinner = (Spinner) findViewById(R.id.categories_spinner);
+        this.categories = expenseManagerDBHelper.getAllCategories(isExpense);
 
-        List<Category> categories = expenseManagerDBHelper.getAllCategories(isExpense);
-        List<String> categoryNames = new ArrayList<>();
-        // sorry for that , too old Java -v
-        for (Category category : categories) {
-            categoryNames.add(category.getName());
-        }
-        ArrayAdapter<String> itemsAdapter =
-                new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, categoryNames);
-        itemsAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        categoriesSpinner.setAdapter(itemsAdapter);
+        this.isExpense.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
 
-        expenseDate.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) {
-                setDateTimeField() ;
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if(isChecked)
+                {
+                    categories =  expenseManagerDBHelper.getAllCategories(false);
+                }
+                else
+                {
+                    categories =  expenseManagerDBHelper.getAllCategories(true);
+                }
+                categoryNames = getCategoryNames();
+                setDropdownOptions(categoryNames);
             }
         });
+
+        this.categoryNames = getCategoryNames();
+
+        this.setDropdownOptions(categoryNames);
 
         saveExpense.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -99,5 +106,29 @@ public class ExpenseIncomeActivity extends AppCompatActivity {
         }, newCalendar.get(Calendar.YEAR), newCalendar.get(Calendar.MONTH), newCalendar.get(Calendar.DAY_OF_MONTH));
         datePickerDialog.show();
         expenseDate.setText(dateFormatter.format(dateSelected.getTime()));
+    }
+
+    private void setDropdownOptions(List<String> categoryNames) {
+        ArrayAdapter<String> itemsAdapter =
+                new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, categoryNames);
+        itemsAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        categoriesSpinner.setAdapter(itemsAdapter);
+
+        expenseDate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                setDateTimeField() ;
+            }
+        });
+    }
+
+    private List<String> getCategoryNames() {
+        List<String> categoryNames = new ArrayList<>();
+
+        for (Category category : categories) {
+            categoryNames.add(category.getName());
+        }
+
+        return categoryNames;
     }
 }
