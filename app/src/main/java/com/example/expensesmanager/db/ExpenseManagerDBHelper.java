@@ -153,28 +153,25 @@ public class ExpenseManagerDBHelper extends SQLiteOpenHelper {
 
         for (Category category : initialCategories) {
             values.put(ExpenseManagerDBHelper.COLUMN_CATEGORY_NAME, category.getName());
-            values.put(ExpenseManagerDBHelper.COLUMN_IS_EXPENSE, category.getExpense());
+            values.put(ExpenseManagerDBHelper.COLUMN_IS_EXPENSE, category.getExpense().toString());
 
-            db.insert(ExpenseManagerDBHelper.CATEGORIES_TABLE_NAME, null, values);
-        }
-
-
-        // add check if already added
-        if (getAllCategories().size() <= 0) {
             db.insert(ExpenseManagerDBHelper.CATEGORIES_TABLE_NAME, null, values);
         }
     }
 
-    public List<Category> getAllCategories() {
+    public List<Category> getAllCategories(Boolean isExpenseFilter) {
         SQLiteDatabase db = this.getReadableDatabase();
         List<Category> categories = new ArrayList<>();
 
-        String query = "SELECT" +
-                " * FROM " +
-                ExpenseManagerDBHelper.CATEGORIES_TABLE_NAME +
-                ";";
-
-        Cursor cursor = db.rawQuery(query, null);
+        Cursor cursor = db.query(
+                ExpenseManagerDBHelper.CATEGORIES_TABLE_NAME,
+                null,
+                ExpenseManagerDBHelper.COLUMN_IS_EXPENSE + "=?",
+                new String[]{isExpenseFilter.toString()},
+                null,
+                null,
+                null
+        );
 
         while (cursor.moveToNext()) {
             int id = cursor.getInt(cursor.getColumnIndex(ExpenseManagerDBHelper.UID));

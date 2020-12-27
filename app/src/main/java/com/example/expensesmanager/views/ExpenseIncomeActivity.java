@@ -31,7 +31,7 @@ public class ExpenseIncomeActivity extends AppCompatActivity {
     private ExpenseManagerDBHelper expenseManagerDBHelper;
     private EditText expenseDate;
     private EditText expenseAmount;
-    private EditText expenseCategory;
+    private Spinner categoriesSpinner;
     private Switch isExpense;
 
     @Override
@@ -50,10 +50,9 @@ public class ExpenseIncomeActivity extends AppCompatActivity {
         saveExpense = findViewById(R.id.save_expense);
         expenseDate = findViewById(R.id.dateEditText);
         expenseAmount = findViewById(R.id.amount_expense_text);
-//        expenseCategory = findViewById(R.id.expense_category_text);
-        final Spinner categoriesSpinner = (Spinner) findViewById(R.id.categories_spinner);
+        categoriesSpinner = (Spinner) findViewById(R.id.categories_spinner);
 
-        List<Category> categories = expenseManagerDBHelper.getAllCategories();
+        List<Category> categories = expenseManagerDBHelper.getAllCategories(isExpense);
         List<String> categoryNames = new ArrayList<>();
         // sorry for that , too old Java -v
         for (Category category : categories) {

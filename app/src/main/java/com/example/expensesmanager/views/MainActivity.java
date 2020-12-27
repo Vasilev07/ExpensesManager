@@ -30,10 +30,14 @@ public class MainActivity extends AppCompatActivity {
 
         expenseManagerDBHelper = new ExpenseManagerDBHelper(this);
 
-        expenseManagerDBHelper.addInitialCategories();
+
 
         Switch isExpenseSwitch = findViewById(R.id.isExpense);
         Boolean isExpense = !isExpenseSwitch.getShowText();
+
+        if (expenseManagerDBHelper.getAllCategories(isExpense).size() <= 0) {
+            expenseManagerDBHelper.addInitialCategories();
+        }
 
         data = new ArrayList<>(expenseManagerDBHelper.getAllExpensesOrIncomes(!isExpense).values());
 
