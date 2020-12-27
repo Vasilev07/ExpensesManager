@@ -30,10 +30,23 @@ public class MainActivity extends AppCompatActivity {
 
         expenseManagerDBHelper = new ExpenseManagerDBHelper(this);
 
-
-
         Switch isExpenseSwitch = findViewById(R.id.isExpense);
         Boolean isExpense = !isExpenseSwitch.getShowText();
+
+        isExpenseSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if(isChecked)
+                {
+                    data = new ArrayList<>(expenseManagerDBHelper.getAllExpensesOrIncomes(false).values());
+                }
+                else
+                {
+                    data = new ArrayList<>(expenseManagerDBHelper.getAllExpensesOrIncomes(true).values());
+                }
+            }
+        });
 
         if (expenseManagerDBHelper.getAllCategories(isExpense).size() <= 0) {
             expenseManagerDBHelper.addInitialCategories();

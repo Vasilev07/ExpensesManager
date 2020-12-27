@@ -86,6 +86,8 @@ public class ExpenseIncomeActivity extends AppCompatActivity {
                         expenseDate.getText().toString()
                         );
                 expenseManagerDBHelper.addExpenseOrIncomes(expenseIncomeDetails, isExpense);
+
+                finish();
             }
         });
     }
