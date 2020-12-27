@@ -40,7 +40,8 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/expense_income_switcher" />
+        app:layout_constraintTop_toBottomOf="@+id/expense_income_switcher"
+        app:layout_constraintVertical_bias="0.0" />
 
     <Button
         android:id="@+id/income"
@@ -50,9 +51,8 @@
         android:text="income"
         app:layout_constraintBottom_toBottomOf="@id/expense_card"
         app:layout_constraintEnd_toEndOf="@id/expense_card"
-        app:layout_constraintHorizontal_bias="0.129"
-        app:layout_constraintStart_toEndOf="@+id/expense"
-        app:layout_constraintTop_toBottomOf="@+id/expense_card" />
+        app:layout_constraintHorizontal_bias="0.122"
+        app:layout_constraintStart_toEndOf="@+id/expense" />
 
     <Button
         android:id="@+id/expense"
@@ -62,8 +62,7 @@
         android:text="expense"
         app:layout_constraintBottom_toBottomOf="@id/expense_card"
         app:layout_constraintEnd_toEndOf="@id/expense_card"
-        app:layout_constraintHorizontal_bias="0.297"
-        app:layout_constraintStart_toStartOf="@id/expense_card"
-        app:layout_constraintTop_toBottomOf="@+id/expense_card" />
+        app:layout_constraintHorizontal_bias="0.337"
+        app:layout_constraintStart_toStartOf="@id/expense_card" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
