@@ -29,6 +29,7 @@ public class ExpenseIncomeActivity extends AppCompatActivity {
     Calendar dateSelected = Calendar.getInstance();
     private DatePickerDialog datePickerDialog;
     private Button saveExpense;
+    private Button deleteExpense;
     private ExpenseManagerDBHelper expenseManagerDBHelper;
     private EditText expenseDate;
     private EditText expenseAmount;
@@ -36,6 +37,7 @@ public class ExpenseIncomeActivity extends AppCompatActivity {
     private Switch isExpense;
     private List<Category> categories;
     private List<String> categoryNames;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,6 +53,7 @@ public class ExpenseIncomeActivity extends AppCompatActivity {
         this.isExpense.setChecked(!isExpense);
 
         saveExpense = findViewById(R.id.save_expense);
+        deleteExpense = findViewById(R.id.delete_expense);
         expenseDate = findViewById(R.id.dateEditText);
         expenseAmount = findViewById(R.id.amount_expense_text);
         categoriesSpinner = (Spinner) findViewById(R.id.categories_spinner);
@@ -88,6 +91,15 @@ public class ExpenseIncomeActivity extends AppCompatActivity {
                 expenseManagerDBHelper.addExpenseOrIncomes(expenseIncomeDetails, isExpense);
 
                 finish();
+            }
+        });
+
+        deleteExpense.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v) {
+                ConfirmationDialog dialog  = new ConfirmationDialog();
+
+                dialog.show(getSupportFragmentManager(), "ConfirmationDialog");
             }
         });
     }
