@@ -24,5 +24,9 @@ public class ExpenseIncomeDetails implements Serializable {
     public String  getDate() {
         return date;
     }
+
+    public boolean isValid() {
+        return category != null && amount != 0 && date != null;
+    }
 }
 

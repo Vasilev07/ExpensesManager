@@ -1,6 +1,7 @@
 package com.example.expensesmanager.views;
 
 import android.app.DatePickerDialog;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.view.View;
@@ -12,6 +13,7 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Switch;
 
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.expensesmanager.R;
@@ -26,6 +28,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 import java.util.Locale;
+import java.util.Optional;
 
 public class ExpenseIncomeActivity extends AppCompatActivity {
     Calendar dateSelected = Calendar.getInstance();
@@ -42,6 +45,7 @@ public class ExpenseIncomeActivity extends AppCompatActivity {
     private boolean isEdit = false;
     ArrayAdapter<String> itemsAdapter;
 
+    @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -50,11 +54,11 @@ public class ExpenseIncomeActivity extends AppCompatActivity {
         expenseManagerDBHelper = new ExpenseManagerDBHelper(this);
 
         Bundle data = getIntent().getExtras();
-        final Boolean isExpense = data.getBoolean("expense");
+        final Boolean[] isExpenseLocal = {data.getBoolean("expense")};
         final ExpenseIncomeDetails oldExpenseDetails = (ExpenseIncomeDetails) getIntent().getSerializableExtra("expenseDetails");
 
         this.isExpense = findViewById(R.id.isExpense);
-        this.isExpense.setChecked(!isExpense);
+        this.isExpense.setChecked(!isExpenseLocal[0]);
 
         saveExpense = findViewById(R.id.save_expense);
         deleteExpense = findViewById(R.id.delete_expense);
@@ -62,7 +66,7 @@ public class ExpenseIncomeActivity extends AppCompatActivity {
         expenseAmount = findViewById(R.id.amount_expense_text);
         categoriesSpinner = (Spinner) findViewById(R.id.categories_spinner);
 
-        this.categories = expenseManagerDBHelper.getAllCategories(isExpense);
+        this.categories = expenseManagerDBHelper.getAllCategories(isExpenseLocal[0]);
 
         this.isExpense.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
 
@@ -71,10 +75,14 @@ public class ExpenseIncomeActivity extends AppCompatActivity {
                 if(isChecked)
                 {
                     categories =  expenseManagerDBHelper.getAllCategories(false);
+                    isExpense.setChecked(true);
+                    isExpenseLocal[0] = false;
                 }
                 else
                 {
                     categories =  expenseManagerDBHelper.getAllCategories(true);
+                    isExpense.setChecked(false);
+                    isExpenseLocal[0] = true;
                 }
                 categoryNames = getCategoryNames();
                 setDropdownOptions(categoryNames);
@@ -85,7 +93,7 @@ public class ExpenseIncomeActivity extends AppCompatActivity {
 
         this.setDropdownOptions(categoryNames);
 
-        if (oldExpenseDetails.getDate() != null && oldExpenseDetails.getAmount() != 0 && oldExpenseDetails.getCategory() != null) {
+        if (Optional.ofNullable(oldExpenseDetails).isPresent()) {
             this.expenseDate.setText(oldExpenseDetails.getDate());
             this.expenseAmount.setText(oldExpenseDetails.getAmount() + "");
             int spinnerPosition = itemsAdapter.getPosition(oldExpenseDetails.getCategory());
@@ -102,10 +110,10 @@ public class ExpenseIncomeActivity extends AppCompatActivity {
                         expenseDate.getText().toString()
                         );
                 if (isEdit) {
-                    expenseManagerDBHelper.updateExpenseOrIncome(oldExpenseDetails, newExpenseIncomeDetails, isExpense);
+                    expenseManagerDBHelper.updateExpenseOrIncome(oldExpenseDetails, newExpenseIncomeDetails, isExpenseLocal[0]);
                     isEdit = false;
                 } else {
-                    expenseManagerDBHelper.addExpenseOrIncomes(newExpenseIncomeDetails, isExpense);
+                    expenseManagerDBHelper.addExpenseOrIncomes(newExpenseIncomeDetails, isExpenseLocal[0]);
                 }
 
                 finish();
