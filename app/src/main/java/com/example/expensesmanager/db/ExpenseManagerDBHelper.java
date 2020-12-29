@@ -135,6 +135,32 @@ public class ExpenseManagerDBHelper extends SQLiteOpenHelper {
         return expenses;
     }
 
+    public void updateExpenseOrIncome(ExpenseIncomeDetails oldExpenseDetails, ExpenseIncomeDetails expenseIncomeDetails, Boolean isExpense) {
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        ContentValues values = new ContentValues();
+
+        values.put(ExpenseManagerDBHelper.COLUMN_CATEGORY, expenseIncomeDetails.getCategory());
+        values.put(ExpenseManagerDBHelper.COLUMN_DATE, expenseIncomeDetails.getDate());
+        values.put(ExpenseManagerDBHelper.COLUMN_AMOUNT, expenseIncomeDetails.getAmount());
+
+        String whereClause =
+                ExpenseManagerDBHelper.COLUMN_DATE + " = ? AND " +
+                ExpenseManagerDBHelper.COLUMN_AMOUNT + " = ? AND  " +
+                ExpenseManagerDBHelper.COLUMN_CATEGORY + " = ? ";
+        String[] whereArgs = new String[] {
+                oldExpenseDetails.getDate(),
+                String.valueOf(oldExpenseDetails.getAmount()),
+                oldExpenseDetails.getCategory()
+        };
+
+        if (isExpense) {
+            db.update(ExpenseManagerDBHelper.EXPENSES_TABLE_NAME, values, whereClause, whereArgs);
+        } else {
+            db.update(ExpenseManagerDBHelper.INCOME_TABLE_NAME, values, whereClause, whereArgs);
+        }
+    }
+
     public void addInitialCategories() {
         Category food = new Category("food", true);
         Category drinks = new Category("drinks", true);

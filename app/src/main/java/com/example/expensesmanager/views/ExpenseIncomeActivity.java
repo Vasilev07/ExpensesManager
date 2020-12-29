@@ -2,11 +2,11 @@ package com.example.expensesmanager.views;
 
 import android.app.DatePickerDialog;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CompoundButton;
-import android.widget.CursorAdapter;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.Spinner;
@@ -17,8 +17,10 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.example.expensesmanager.R;
 import com.example.expensesmanager.db.ExpenseManagerDBHelper;
 import com.example.expensesmanager.models.Category;
+import com.example.expensesmanager.models.Expense;
 import com.example.expensesmanager.models.ExpenseIncomeDetails;
 
+import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -37,7 +39,8 @@ public class ExpenseIncomeActivity extends AppCompatActivity {
     private Switch isExpense;
     private List<Category> categories;
     private List<String> categoryNames;
-
+    private boolean isEdit = false;
+    ArrayAdapter<String> itemsAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,6 +51,7 @@ public class ExpenseIncomeActivity extends AppCompatActivity {
 
         Bundle data = getIntent().getExtras();
         final Boolean isExpense = data.getBoolean("expense");
+        final ExpenseIncomeDetails oldExpenseDetails = (ExpenseIncomeDetails) getIntent().getSerializableExtra("expenseDetails");
 
         this.isExpense = findViewById(R.id.isExpense);
         this.isExpense.setChecked(!isExpense);
@@ -57,6 +61,7 @@ public class ExpenseIncomeActivity extends AppCompatActivity {
         expenseDate = findViewById(R.id.dateEditText);
         expenseAmount = findViewById(R.id.amount_expense_text);
         categoriesSpinner = (Spinner) findViewById(R.id.categories_spinner);
+
         this.categories = expenseManagerDBHelper.getAllCategories(isExpense);
 
         this.isExpense.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
@@ -80,15 +85,28 @@ public class ExpenseIncomeActivity extends AppCompatActivity {
 
         this.setDropdownOptions(categoryNames);
 
+        if (oldExpenseDetails.getDate() != null && oldExpenseDetails.getAmount() != 0 && oldExpenseDetails.getCategory() != null) {
+            this.expenseDate.setText(oldExpenseDetails.getDate());
+            this.expenseAmount.setText(oldExpenseDetails.getAmount() + "");
+            int spinnerPosition = itemsAdapter.getPosition(oldExpenseDetails.getCategory());
+            categoriesSpinner.setSelection(spinnerPosition);
+            this.isEdit = true;
+        }
+
         saveExpense.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ExpenseIncomeDetails expenseIncomeDetails = new ExpenseIncomeDetails(
+                ExpenseIncomeDetails newExpenseIncomeDetails = new ExpenseIncomeDetails(
                         categoriesSpinner.getSelectedItem().toString(),
                         Integer.parseInt(expenseAmount.getText().toString()),
                         expenseDate.getText().toString()
                         );
-                expenseManagerDBHelper.addExpenseOrIncomes(expenseIncomeDetails, isExpense);
+                if (isEdit) {
+                    expenseManagerDBHelper.updateExpenseOrIncome(oldExpenseDetails, newExpenseIncomeDetails, isExpense);
+                    isEdit = false;
+                } else {
+                    expenseManagerDBHelper.addExpenseOrIncomes(newExpenseIncomeDetails, isExpense);
+                }
 
                 finish();
             }
@@ -123,7 +141,7 @@ public class ExpenseIncomeActivity extends AppCompatActivity {
     }
 
     private void setDropdownOptions(List<String> categoryNames) {
-        ArrayAdapter<String> itemsAdapter =
+        itemsAdapter =
                 new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, categoryNames);
         itemsAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         categoriesSpinner.setAdapter(itemsAdapter);

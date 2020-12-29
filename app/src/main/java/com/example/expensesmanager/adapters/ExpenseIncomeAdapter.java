@@ -1,6 +1,7 @@
 package com.example.expensesmanager.adapters;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,6 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.expensesmanager.R;
 import com.example.expensesmanager.models.Expense;
+import com.example.expensesmanager.views.ExpenseIncomeActivity;
 
 import java.util.ArrayList;
 import java.util.List;

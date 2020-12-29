@@ -19,7 +19,8 @@ import com.example.expensesmanager.adapters.ExpenseIncomeAdapter;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity {
+public class
+MainActivity extends AppCompatActivity {
     private List<Expense> data;
     private ExpenseManagerDBHelper expenseManagerDBHelper;
     public RecyclerView recyclerView;
