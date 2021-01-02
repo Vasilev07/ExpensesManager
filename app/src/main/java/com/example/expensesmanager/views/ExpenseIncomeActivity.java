@@ -3,7 +3,6 @@ package com.example.expensesmanager.views;
 import android.app.DatePickerDialog;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.Parcelable;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -19,10 +18,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.example.expensesmanager.R;
 import com.example.expensesmanager.db.ExpenseManagerDBHelper;
 import com.example.expensesmanager.models.Category;
-import com.example.expensesmanager.models.Expense;
 import com.example.expensesmanager.models.ExpenseIncomeDetails;
 
-import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;

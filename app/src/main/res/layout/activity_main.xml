@@ -10,7 +10,9 @@
         android:id="@+id/expense_income_switcher"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
 
         <TextView
             android:id="@+id/expense_main"
@@ -30,6 +32,15 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="Income" />
+
+        <Button
+            android:id="@+id/currencies_info"
+            android:layout_width="118dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Currencies"
+            android:onClick="openCurrencyInfo" />
+
     </LinearLayout>
 
     <androidx.recyclerview.widget.RecyclerView
